@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"path/filepath"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -17,7 +16,13 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Use(SessionLoad) // session load middleware
 	mux.Get("/", handler.Repo.HandleHome)
 	mux.Get("/about", handler.Repo.HandleAbout)
-	fileServer := http.FileServer(http.Dir(filepath.Join(".", "static")))
-	mux.Handle(filepath.Join(".", "static", "*"), http.StripPrefix("/static", fileServer))
+	mux.Get("/contact", handler.Repo.HandleContact)
+	mux.Get("/generals", handler.Repo.HandleGenerals)
+	mux.Get("/majors", handler.Repo.HandleMajors)
+	mux.Get("/make-reservation", handler.Repo.HandleMakeReservation)
+	mux.Get("/reservation-summary", handler.Repo.HandleReservSummary)
+	mux.Get("/search-avaliable", handler.Repo.HandleSearchAvaliable)
+	fileServer := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
 	return mux
 }

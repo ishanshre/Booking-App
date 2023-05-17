@@ -41,3 +41,27 @@ func (m *Repository) HandleAbout(w http.ResponseWriter, r *http.Request) {
 		StringMap: stringMap,
 	})
 }
+
+func (m *Repository) HandleContact(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "contact.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) HandleGenerals(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "generals.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) HandleMajors(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "majors.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) HandleMakeReservation(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "make-reservation.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) HandleReservSummary(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "reservation-summary.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) HandleSearchAvaliable(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "search-avaliable.page.tmpl", &models.TemplateData{})
+}
