@@ -5,7 +5,30 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1 class="text-center">Make Reservation</h1>
+                <h1 class="text-center mt-5">Make Reservation</h1>
+
+                <!--Start a form group-->
+                <form action="" method="post" class="need-validation" novalidate>
+                    <div class="form-group mt-5">
+                        <label for="first_name">First Name:</label>
+                        <input class="form-control" type="text" name="first_name" id="first_name" required autocomplete="off">
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="last_name">Last Name:</label>
+                        <input class="form-control" type="text" name="last_name" id="last_name" required autocomplete="off">
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="email">Email Address:</label>
+                        <input class="form-control" type="email" name="email" id="email" required autocomplete="off">
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="phone">Phone Number:</label>
+                        <input class="form-control" type="text" name="phone" id="phone" required autocomplete="off">
+                    </div>
+                    <hr>
+                    <input type="submit" value="Make Reservation" class="btn btn-outline-primary">
+                </form>
+                <!--End form group-->
             </div>
         </div>
     </div>

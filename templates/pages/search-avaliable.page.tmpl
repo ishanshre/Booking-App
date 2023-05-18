@@ -2,13 +2,51 @@
 
 {{define "title"}}Search Avaliablity{{end}}
 
+{{define "css"}}
+
+{{end}}
+
 {{define "content"}}
     <div class="container">
         <div class="row mt-4">
             <div class="col text-center">
                 <h1 class="text-center">Search For Avaliablity</h1>
-
             </div>
         </div>
+        <form action="/search-avaliable" method="post" class="text-center mt-5 needs-validation" novalidate>
+            <div class="row">
+                <div class="col">
+                    <div class="row" id="reservation-dates">
+                        <div class="col-md-6">
+                            <label for="start-date">Starting Date</label>
+                            <input type="text" name="start-date" class="form-control" required aria-describedby="startDateHelp" placeholder="Starting Date">
+                            <small id="startDateHelp" class="form-text text-muted">YYYY-MM-DD</small>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please select a valid Starting date.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="end-date">Ending Date</label>
+                            <input type="text" name="start-date" class="form-control" required aria-describedby="endDateHelp" placeholder="Ending Date">
+                            <small id="endDateHelp" class="form-text text-muted">YYYY-MM-DD</small>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please select a valid ending date.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary mt-4">Search</button>
+        </form>
     </div>
+{{end}}
+
+{{define "js"}}
+    <script src="/static/js/search-avaliable.js"></script>
 {{end}}
