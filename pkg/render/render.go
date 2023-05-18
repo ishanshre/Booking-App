@@ -10,6 +10,7 @@ import (
 
 	"github.com/ishanshre/Booking-App/pkg/config"
 	"github.com/ishanshre/Booking-App/pkg/models"
+	"github.com/justinas/nosurf"
 )
 
 var app *config.AppConfig
@@ -18,12 +19,13 @@ func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 
-func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
 	// this function returns the defualt data to every templates
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 	if app.UseCache {
 		// if UseCache is true then redner template from cache
@@ -42,7 +44,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 	buff := new(bytes.Buffer)
 
 	// add default data to all templates
-	td = AddDefaultData(td)
+	td = AddDefaultData(td, r)
 
 	// applied the parsed templates and data to the buffer
 	if err := t.Execute(buff, td); err != nil {
