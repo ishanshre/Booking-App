@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/ishanshre/Booking-App/pkg/config"
@@ -71,4 +73,15 @@ func (m *Repository) HandlePostSearchAvaliable(w http.ResponseWriter, r *http.Re
 	start := r.Form.Get("start-date")
 	end := r.Form.Get("end-date")
 	w.Write([]byte(fmt.Sprintf("Post method to search avaliablility %s and %s", start, end)))
+}
+
+func (m *Repository) HandleSearchAvaliableJson(w http.ResponseWriter, r *http.Request) {
+	log.Println("working")
+	resp := models.JsonResponse{
+		Ok:      true,
+		Message: "Avaliable",
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(resp)
 }

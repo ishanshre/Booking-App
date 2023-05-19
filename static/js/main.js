@@ -72,18 +72,16 @@ function Prompt() {
             msg="",
             title= "",
         } = c;
-        const { value: formValues } = await Swal.fire({
+        const { value: result } = await Swal.fire({
             title: title,
             html: msg,
             backdrop: false,
             showCancelButton: true,
             focusConfirm: false,
             willOpen: () => {
-                const elem = document.getElementById('reservation-dates-modal');
-                const rp = new DateRangePicker(elem, {
-                    format: 'yyyy-mm-dd',
-                    showOnFocus: true,
-                })
+                if (c.willOpen !== undefined) {
+                    c.willOpen();
+                }
             },
             preConfirm: () => {
               return [
@@ -92,14 +90,37 @@ function Prompt() {
               ]
             },
             didOpen: () => {
-                document.getElementById('start').removeAttribute('disabled')
-                document.getElementById('end').removeAttribute('disabled')
+                if (c.didOpen !== undefined) {
+                    c.didOpen();
+                }
             }
           })
-          
-          if (formValues) {
-            Swal.fire(JSON.stringify(formValues))
-          }
+        // if (
+        //   c.callback &&
+        //   result &&
+        //   result.dismiss !== Swal.DismissReason.cacel &&
+        //   result.value !== ""
+        // ) {
+        //   console.log("callback")
+        //   c.callback(result);
+        // } else {
+        //   c.callback(false);
+        // }
+        // console.log(c.callback)
+        if (result) {
+            if (result.dismiss !== Swal.DismissReason.cancel) {
+                if (result.value !== "") {
+                    if (c.callback !== undefined) {
+                        //console.log(result)
+                        c.callback(result)
+                    } else {
+                        c.callback(false)
+                    }
+                } else {
+                    c.callback(false)
+                }
+            }
+        }
     }
     return {
         toast: toast,
