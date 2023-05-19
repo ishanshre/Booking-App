@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/ishanshre/Booking-App/pkg/config"
-	"github.com/ishanshre/Booking-App/pkg/models"
-	"github.com/ishanshre/Booking-App/pkg/render"
+	"github.com/ishanshre/Booking-App/internal/config"
+	"github.com/ishanshre/Booking-App/internal/models"
+	"github.com/ishanshre/Booking-App/internal/render"
 )
 
 // create a Repository type to get use global config

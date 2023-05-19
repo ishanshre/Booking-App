@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/ishanshre/Booking-App/pkg/config"
-	"github.com/ishanshre/Booking-App/pkg/handler"
-	"github.com/ishanshre/Booking-App/pkg/render"
+	"github.com/ishanshre/Booking-App/internal/config"
+	"github.com/ishanshre/Booking-App/internal/handler"
+	"github.com/ishanshre/Booking-App/internal/render"
 )
 
 var app config.AppConfig
