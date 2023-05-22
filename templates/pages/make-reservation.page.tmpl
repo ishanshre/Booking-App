@@ -8,22 +8,55 @@
                 <h1 class="text-center mt-5">Make Reservation</h1>
 
                 <!--Start a form group-->
-                <form action="" method="post" class="need-validation" novalidate>
+                <form action="" method="post"  novalidate>
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" id="csrf_token">
                     <div class="form-group mt-5">
-                        <label for="first_name">First Name:</label>
-                        <input class="form-control" type="text" name="first_name" id="first_name" required autocomplete="off">
+                        <label for="first_name"
+                            class="{{with .Form.Errors.Get "first_name"}}text-red{{end}}"
+                        >First Name:</label>
+                        {{with .Form.Errors.Get "first_name"}}
+                            <label class="text-danger">{{.}}</label>
+                        {{end}}
+                        <input 
+                        class="form-control
+                            {{with .Form.Errors.Get "first_name"}} is-invalid{{end}}
+                        " type="text" name="first_name" id="first_name" required autocomplete="off">
+                        <div class="valid-feedback">
+                                Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid First Name
+                        </div>
                     </div>
                     <div class="form-group mt-5">
                         <label for="last_name">Last Name:</label>
                         <input class="form-control" type="text" name="last_name" id="last_name" required autocomplete="off">
+                        <div class="valid-feedback">
+                                Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid Last Name
+                        </div>
                     </div>
                     <div class="form-group mt-5">
                         <label for="email">Email Address:</label>
                         <input class="form-control" type="email" name="email" id="email" required autocomplete="off">
+                        <div class="valid-feedback">
+                                Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid Email Address
+                        </div>
                     </div>
                     <div class="form-group mt-5">
                         <label for="phone">Phone Number:</label>
                         <input class="form-control" type="text" name="phone" id="phone" required autocomplete="off">
+                        <div class="valid-feedback">
+                                Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid Phone Number
+                        </div>
                     </div>
                     <hr>
                     <input type="submit" value="Make Reservation" class="btn btn-outline-primary">

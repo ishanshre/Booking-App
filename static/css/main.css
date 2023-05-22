@@ -15,3 +15,7 @@ a {
 .datepicker {
     z-index: 10000;
 }
+
+.text-red {
+    color: red;
+}
