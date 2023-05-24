@@ -103,11 +103,15 @@ func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Re
 }
 
 func (m *Repository) HandleReservSummary(w http.ResponseWriter, r *http.Request) {
+	// get reservation from session and type cast into models.Reservation
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
 		log.Println("cannot get item from the sessiuon")
+		m.App.Session.Put(r.Context(), "error", "Cannot get the reservation from session")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
+	m.App.Session.Remove(r.Context(), "reservation")
 	data := make(map[string]interface{})
 	data["reservation"] = reservation
 	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{

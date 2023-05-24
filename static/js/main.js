@@ -25,13 +25,15 @@ let attention = Prompt();
 
 function notify(msg, msgType){
     notie.alert({
-        type: msgType, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+        type: msgType,
         text: msg,
-        stay: fasle, // optional, default = false
-        time: 3, // optional, default = 3, minimum = 1,
-        position: top // optional, default = 'top', enum: ['top', 'bottom']
-      })
-}
+        stay: false,
+        time: 3,
+        position: 'top'
+    })
+};
+
+
 
 function notifyModal(title, text, icon, confirmationButtonText) {
     Swal.fire({
@@ -41,6 +43,13 @@ function notifyModal(title, text, icon, confirmationButtonText) {
         confirmButtonText: confirmButtonText
     })
 };
+
+if (document.querySelector('meta[name="message"]')) {
+    message = document.querySelector('meta[name="message"]').content
+    type = document.querySelector('meta[name="type"]').content
+    notify(message, type)
+}
+
 
 function Prompt() {
     let toast = (c)=> {

@@ -21,6 +21,10 @@ func NewTemplate(a *config.AppConfig) {
 
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
 	// this function returns the defualt data to every templates
+
+	td.FlashMessage = app.Session.GetString(r.Context(), "flash")
+	td.Error = app.Session.GetString(r.Context(), "error")
+	td.Warning = app.Session.GetString(r.Context(), "warning")
 	td.CSRFToken = nosurf.Token(r)
 	return td
 }
