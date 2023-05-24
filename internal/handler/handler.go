@@ -60,8 +60,13 @@ func (m *Repository) HandleMajors(w http.ResponseWriter, r *http.Request) {
 
 // HandlePostMakeReservation handle the post method
 func (m *Repository) HandleMakeReservation(w http.ResponseWriter, r *http.Request) {
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
+
 	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
+		Data: data,
 	})
 }
 
@@ -72,13 +77,17 @@ func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Re
 		return
 	}
 	reservation := models.Reservation{
-		FristName: r.Form.Get("first_name"),
+		FirstName: r.Form.Get("first_name"),
 		LastName:  r.Form.Get("last_name"),
 		Email:     r.Form.Get("email"),
 		Phone:     r.Form.Get("phone"),
 	}
 	form := forms.New(r.PostForm)
-	form.Has("first_name", r)
+	// form.Has("first_name", r)
+	form.Required("first_name", "last_name", "email")
+	if reservation.Phone != "" {
+		form.MinLength("phone", 10, r)
+	}
 	if !form.Valid() {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation

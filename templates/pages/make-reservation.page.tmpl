@@ -7,8 +7,8 @@
             <div class="col">
                 <h1 class="text-center mt-5">Make Reservation</h1>
 
-                <!--Start a form group-->
-                <form action="" method="post"  novalidate>
+                {{$res := index .Data "reservation"}}
+                <form action="/make-reservation" method="post"  novalidate>
                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" id="csrf_token">
                     <div class="form-group mt-5">
                         <label for="first_name"
@@ -20,7 +20,8 @@
                         <input 
                         class="form-control
                             {{with .Form.Errors.Get "first_name"}} is-invalid{{end}}
-                        " type="text" name="first_name" id="first_name" required autocomplete="off">
+                        " type="text" name="first_name" id="first_name" value="{{$res.FirstName}}"
+                        required autocomplete="off">
                         <div class="valid-feedback">
                                 Looks good!
                         </div>
@@ -29,8 +30,13 @@
                         </div>
                     </div>
                     <div class="form-group mt-5">
-                        <label for="last_name">Last Name:</label>
-                        <input class="form-control" type="text" name="last_name" id="last_name" required autocomplete="off">
+                        <label for="last_name"
+                        class="{{with .Form.Errors.Get "last_name"}}text-red{{end}}"
+                        >Last Name:</label>
+                        {{with .Form.Errors.Get "last_name"}}<label class="text-danger">{{.}}</label>{{end}}
+                        <input class="form-control {{with .Form.Errors.Get "last_name"}}is-invalid{{end}}" 
+                        type="text" name="last_name" 
+                        id="last_name" required autocomplete="off" value="{{$res.LastName}}">
                         <div class="valid-feedback">
                                 Looks good!
                         </div>
@@ -39,8 +45,13 @@
                         </div>
                     </div>
                     <div class="form-group mt-5">
-                        <label for="email">Email Address:</label>
-                        <input class="form-control" type="email" name="email" id="email" required autocomplete="off">
+                        <label for="email"
+                        class="{{with .Form.Errors.Get "email"}}text-red{{end}}"
+                        >Email Address:</label>
+                        {{with .Form.Errors.Get "email"}}<label class="text-red">{{.}}</label>{{end}}
+                        <input class="form-control {{with .Form.Errors.Get "email"}}is-invalid{{end}}" 
+                        type="email" name="email" id="email" 
+                        required autocomplete="off" value="{{$res.Email}}">
                         <div class="valid-feedback">
                                 Looks good!
                         </div>
@@ -49,8 +60,11 @@
                         </div>
                     </div>
                     <div class="form-group mt-5">
-                        <label for="phone">Phone Number:</label>
-                        <input class="form-control" type="text" name="phone" id="phone" required autocomplete="off">
+                        <label for="phone" class="{{with .Form.Errors.Get "phone"}}text-red{{end}}">Phone Number:</label>
+                        {{with .Form.Errors.Get "phone"}}<label class="text-red">{{.}}</label>{{end}}
+                        <input class="form-control {{with .Form.Errors.Get "phone"}}is-invalid{{end}}" 
+                        type="text" name="phone" id="phone" 
+                        required autocomplete="off" value="{{$res.Phone}}">
                         <div class="valid-feedback">
                                 Looks good!
                         </div>
@@ -61,7 +75,7 @@
                     <hr>
                     <input type="submit" value="Make Reservation" class="btn btn-outline-primary">
                 </form>
-                <!--End form group-->
+                
             </div>
         </div>
     </div>

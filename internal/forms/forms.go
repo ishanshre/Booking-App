@@ -1,8 +1,10 @@
 package forms
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 // it create  a custom form stuct and embedded url.Values
@@ -19,11 +21,31 @@ func New(data url.Values) *Form {
 	}
 }
 
+// Checks for required fields
+func (f *Form) Required(fields ...string) {
+	for _, field := range fields {
+		value := f.Get(field)
+		if strings.TrimSpace(value) == "" {
+			f.Errors.Add(field, "This field cannot be blank")
+		}
+	}
+}
+
 // checks is form field in post is not empty
 func (f *Form) Has(field string, r *http.Request) bool {
 	x := r.Form.Get(field)
 	if x == "" {
 		f.Errors.Add(field, "This field cannot be blank")
+		return false
+	}
+	return true
+}
+
+// min lenght checks for minimum lenght of characters in the field
+func (f *Form) MinLength(field string, length int, r *http.Request) bool {
+	x := r.Form.Get(field)
+	if len(x) < length {
+		f.Errors.Add(field, fmt.Sprintf("this field must be at least %d characters long", length))
 		return false
 	}
 	return true
