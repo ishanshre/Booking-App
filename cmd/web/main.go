@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/ishanshre/Booking-App/internal/config"
 	"github.com/ishanshre/Booking-App/internal/handler"
+	"github.com/ishanshre/Booking-App/internal/models"
 	"github.com/ishanshre/Booking-App/internal/render"
 )
 
@@ -26,6 +28,9 @@ func main() {
 		log.Println("Usuage: command <port-number>")
 		log.Fatalln("port number must be an integer: 1024 to 65535")
 	}
+
+	// store values in the sessions
+	gob.Register(models.Reservation{})
 
 	// set InProduction to true in production
 	app.InProduction = false

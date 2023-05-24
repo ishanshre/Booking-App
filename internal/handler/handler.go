@@ -98,10 +98,21 @@ func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Re
 		})
 		return
 	}
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
 
 func (m *Repository) HandleReservSummary(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{})
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		log.Println("cannot get item from the sessiuon")
+		return
+	}
+	data := make(map[string]interface{})
+	data["reservation"] = reservation
+	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }
 
 func (m *Repository) HandleSearchAvaliable(w http.ResponseWriter, r *http.Request) {
