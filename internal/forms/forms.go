@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/asaskevich/govalidator"
 )
 
 // it create  a custom form stuct and embedded url.Values
@@ -49,6 +51,13 @@ func (f *Form) MinLength(field string, length int, r *http.Request) bool {
 		return false
 	}
 	return true
+}
+
+// checks for correct email
+func (f *Form) IsEmail(field string) {
+	if !govalidator.IsEmail(f.Get(field)) {
+		f.Errors.Add(field, "Invalid Email Address")
+	}
 }
 
 // Valid returns true if there are no errors, otherwise false

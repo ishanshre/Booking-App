@@ -88,6 +88,7 @@ func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Re
 	if reservation.Phone != "" {
 		form.MinLength("phone", 10, r)
 	}
+	form.IsEmail("email")
 	if !form.Valid() {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
