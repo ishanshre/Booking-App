@@ -56,7 +56,7 @@ func getRoutes() http.Handler {
 	render.NewTemplate(&app)
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
-	mux.Use(NoSurf)      // csrf middleware
+	//mux.Use(NoSurf)      // csrf middleware
 	mux.Use(SessionLoad) // session load middleware
 	mux.Get("/", Repo.HandleHome)
 	mux.Get("/about", Repo.HandleAbout)
