@@ -14,6 +14,7 @@ import (
 )
 
 var app *config.AppConfig
+var pathToTemplates = "templates"
 
 func NewTemplate(a *config.AppConfig) {
 	app = a
@@ -65,8 +66,8 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *mod
 func CreateTemplateCache() (map[string]*template.Template, error) {
 
 	// path patterns for layout and pages templates
-	pathLayoutPattern := filepath.Join("templates", "layout", "*.layout.tmpl")
-	pathPagePattern := filepath.Join("templates", "pages", "*.page.tmpl")
+	pathLayoutPattern := filepath.Join(pathToTemplates, "layout", "*.layout.tmpl")
+	pathPagePattern := filepath.Join(pathToTemplates, "pages", "*.page.tmpl")
 	myCache := map[string]*template.Template{}
 
 	// filepath.Glob return a slice with all *.page.tmpl in template/pages folder
