@@ -83,10 +83,9 @@ func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Re
 		Phone:     r.Form.Get("phone"),
 	}
 	form := forms.New(r.PostForm)
-	// form.Has("first_name", r)
 	form.Required("first_name", "last_name", "email")
 	if reservation.Phone != "" {
-		form.MinLength("phone", 10, r)
+		form.MinLength("phone", 10)
 	}
 	form.IsEmail("email")
 	if !form.Valid() {
