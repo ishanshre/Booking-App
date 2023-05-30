@@ -4,13 +4,18 @@ import (
 	"encoding/gob"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/ishanshre/Booking-App/internal/handler"
+	"github.com/ishanshre/Booking-App/internal/helpers"
 	"github.com/ishanshre/Booking-App/internal/models"
 	"github.com/ishanshre/Booking-App/internal/render"
 )
+
+var infoLog *log.Logger
+var errorLog *log.Logger
 
 func run() error {
 	// store values in the sessions
@@ -18,6 +23,13 @@ func run() error {
 
 	// set InProduction to true in production
 	app.InProduction = false
+
+	// setup logger
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 
 	// initiating a session
 	session = scs.New()               // creating a new session
@@ -44,5 +56,6 @@ func run() error {
 	repo := handler.NewRepo(&app)
 	// pass the repo to the handler
 	handler.NewHandler(repo)
+	helpers.NewHelpers(&app)
 	return nil
 }

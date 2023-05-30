@@ -3,11 +3,11 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/ishanshre/Booking-App/internal/config"
 	"github.com/ishanshre/Booking-App/internal/forms"
+	"github.com/ishanshre/Booking-App/internal/helpers"
 	"github.com/ishanshre/Booking-App/internal/models"
 	"github.com/ishanshre/Booking-App/internal/render"
 )
@@ -32,18 +32,11 @@ func NewHandler(r *Repository) {
 }
 
 func (m *Repository) HandleHome(w http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) HandleAbout(w http.ResponseWriter, r *http.Request) {
-	stringMap := map[string]string{}
-	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remoteIP
-	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
-	})
+	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) HandleContact(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +66,8 @@ func (m *Repository) HandleMakeReservation(w http.ResponseWriter, r *http.Reques
 // handles the post of the reservation page and display form
 func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
-		log.Println(err)
+		//log.Println(err)
+		helpers.ServerError(w, err)
 		return
 	}
 	reservation := models.Reservation{
@@ -105,7 +99,7 @@ func (m *Repository) HandleReservSummary(w http.ResponseWriter, r *http.Request)
 	// get reservation from session and type cast into models.Reservation
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		log.Println("cannot get item from the session")
+		m.App.ErrorLog.Println("Cannot get error from the session")
 		m.App.Session.Put(r.Context(), "error", "Cannot get the reservation from session")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
@@ -129,7 +123,6 @@ func (m *Repository) HandlePostSearchAvaliable(w http.ResponseWriter, r *http.Re
 }
 
 func (m *Repository) HandleSearchAvaliableJson(w http.ResponseWriter, r *http.Request) {
-	log.Println("working")
 	resp := models.JsonResponse{
 		Ok:      true,
 		Message: "Avaliable",
