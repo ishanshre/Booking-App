@@ -6,24 +6,29 @@ import (
 	"net/http"
 
 	"github.com/ishanshre/Booking-App/internal/config"
+	"github.com/ishanshre/Booking-App/internal/driver"
 	"github.com/ishanshre/Booking-App/internal/forms"
 	"github.com/ishanshre/Booking-App/internal/helpers"
 	"github.com/ishanshre/Booking-App/internal/models"
 	"github.com/ishanshre/Booking-App/internal/render"
+	"github.com/ishanshre/Booking-App/internal/repository"
+	"github.com/ishanshre/Booking-App/internal/repository/dbrepo"
 )
 
 // create a Repository type to get use global config
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // Repo to use by handlers
 var Repo *Repository
 
 // NewRepo create a new Repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 

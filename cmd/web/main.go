@@ -24,9 +24,11 @@ func main() {
 		log.Fatalln("port number must be an integer: 1024 to 65535")
 	}
 
-	if err := run(); err != nil {
+	db, err := run()
+	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.SQL.Close()
 
 	// create the http server
 	port := fmt.Sprintf(":%v", p)

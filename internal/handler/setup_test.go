@@ -14,6 +14,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/ishanshre/Booking-App/internal/config"
+	"github.com/ishanshre/Booking-App/internal/driver"
 	"github.com/ishanshre/Booking-App/internal/models"
 	"github.com/ishanshre/Booking-App/internal/render"
 	"github.com/justinas/nosurf"
@@ -44,7 +45,13 @@ func getRoutes() http.Handler {
 	session.Cookie.SameSite = http.SameSiteLaxMode
 	session.Cookie.Secure = app.InProduction
 	app.Session = session
-
+	//connect to database
+	log.Println("connecting to database")
+	db, err := driver.ConnectSQL(os.Getenv("test"))
+	if err != nil {
+		log.Fatalln("Error in connecting to database", err)
+	}
+	log.Println("connected to database")
 	// initiate a template cache
 	tc, err := CreateTestTemplateCache()
 	if err != nil {
@@ -57,7 +64,7 @@ func getRoutes() http.Handler {
 	// pass global config to render
 
 	// pass global config to render
-	repo := NewRepo(&app)
+	repo := NewRepo(&app, db)
 	// pass the repo to the handler
 	NewHandler(repo)
 	render.NewTemplate(&app)
