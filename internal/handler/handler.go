@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/ishanshre/Booking-App/internal/config"
 	"github.com/ishanshre/Booking-App/internal/driver"
@@ -75,11 +77,34 @@ func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Re
 		helpers.ServerError(w, err)
 		return
 	}
-	reservation := models.Reservation{
+
+	// get the start and end date from the form
+	sd := r.Form.Get("start_date")
+	ed := r.Form.Get("end_date")
+	// date we get 2021-01-01 format so parsing the date format
+	layout := "2006-01-02"
+	startDate, err := time.Parse(layout, sd)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+	endDate, err := time.Parse(layout, ed)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+	roomID, err := strconv.Atoi(r.Form.Get("room_id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+	reservation := &models.Reservation{
 		FirstName: r.Form.Get("first_name"),
 		LastName:  r.Form.Get("last_name"),
 		Email:     r.Form.Get("email"),
 		Phone:     r.Form.Get("phone"),
+		StartDate: startDate,
+		EndDate:   endDate,
+		RoomID:    roomID,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	form := forms.New(r.PostForm)
 	form.Required("first_name", "last_name", "email")
@@ -95,6 +120,9 @@ func (m *Repository) HandlePostMakeReservation(w http.ResponseWriter, r *http.Re
 			Data: data,
 		})
 		return
+	}
+	if err := m.DB.InsertReservation(reservation); err != nil {
+		helpers.ServerError(w, err)
 	}
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)

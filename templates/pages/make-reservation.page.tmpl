@@ -72,6 +72,45 @@
                             Please select a valid Phone Number
                         </div>
                     </div>
+                    <div class="form-group mt-5">
+                        <label for="start_date" class="{{with .Form.Errors.Get "start_date"}}text-red{{end}}">Start Date: </label>
+                        {{with .Form.Errors.Get "start_date"}}<label class="text-red">{{.}}</label>{{end}}
+                        <input class="form-control {{with .Form.Errors.Get "start_date"}}is-invalid{{end}}" 
+                        type="text" name="start_date" id="start_date" 
+                        required autocomplete="off" value="{{$res.StartDate}}">
+                        <div class="valid-feedback">
+                                Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid Invalid Start Date
+                        </div>
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="end_date" class="{{with .Form.Errors.Get "end_date"}}text-red{{end}}">End Date:</label>
+                        {{with .Form.Errors.Get "end_date"}}<label class="text-red">{{.}}</label>{{end}}
+                        <input class="form-control {{with .Form.Errors.Get "end_date"}}is-invalid{{end}}" 
+                        type="text" name="end_date" id="end_date" 
+                        required autocomplete="off" value="{{$res.EndDate}}">
+                        <div class="valid-feedback">
+                                Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid End Date
+                        </div>
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="room_id" class="{{with .Form.Errors.Get "room_id"}}text-red{{end}}">Rooom ID:</label>
+                        {{with .Form.Errors.Get "room_id"}}<label class="text-red">{{.}}</label>{{end}}
+                        <input class="form-control {{with .Form.Errors.Get "room_id"}}is-invalid{{end}}" 
+                        type="text" name="room_id" id="room_id" 
+                        required autocomplete="off" value="{{$res.RoomID}}">
+                        <div class="valid-feedback">
+                                Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select a valid Room ID
+                        </div>
+                    </div>
                     <hr>
                     <input type="submit" value="Make Reservation" class="btn btn-outline-primary">
                 </form>
