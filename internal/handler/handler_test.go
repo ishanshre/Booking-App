@@ -45,7 +45,7 @@ var theTests = []struct {
 
 func TestHandlers(t *testing.T) {
 	routes := getRoutes()
-	ts := httptest.NewTLSServer(routes)
+	ts := httptest.NewServer(routes)
 	defer ts.Close()
 	for _, e := range theTests {
 		if e.method == "GET" {

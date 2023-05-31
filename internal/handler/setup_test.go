@@ -17,6 +17,7 @@ import (
 	"github.com/ishanshre/Booking-App/internal/driver"
 	"github.com/ishanshre/Booking-App/internal/models"
 	"github.com/ishanshre/Booking-App/internal/render"
+	"github.com/joho/godotenv"
 	"github.com/justinas/nosurf"
 )
 
@@ -27,6 +28,9 @@ var pathToTemplates string = "./../../templates"
 // var functions = template.FuncMap{}
 
 func getRoutes() http.Handler {
+	if err := godotenv.Load("./../../.env"); err != nil {
+		log.Println("error in loading env files")
+	}
 	gob.Register(models.Reservation{})
 
 	// set InProduction to true in production
@@ -67,7 +71,7 @@ func getRoutes() http.Handler {
 	repo := NewRepo(&app, db)
 	// pass the repo to the handler
 	NewHandler(repo)
-	render.NewTemplate(&app)
+	render.NewRenderer(&app)
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
 	//mux.Use(NoSurf)      // csrf middleware

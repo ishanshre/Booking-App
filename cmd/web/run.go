@@ -13,18 +13,18 @@ import (
 	"github.com/ishanshre/Booking-App/internal/helpers"
 	"github.com/ishanshre/Booking-App/internal/models"
 	"github.com/ishanshre/Booking-App/internal/render"
-	"github.com/joho/godotenv"
 )
 
 var infoLog *log.Logger
 var errorLog *log.Logger
 
 func run() (*driver.DB, error) {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Println("error in loading env files")
-	}
 	// store values in the sessions
+	gob.Register(models.User{})
 	gob.Register(models.Reservation{})
+	gob.Register(models.Restriction{})
+	gob.Register(models.Room{})
+	gob.Register(models.RoomRestriction{})
 
 	// set InProduction to true in production
 	app.InProduction = false
@@ -64,7 +64,7 @@ func run() (*driver.DB, error) {
 	app.UseCache = false // when false it will read from disk always
 
 	// pass global config to render
-	render.NewTemplate(&app)
+	render.NewRenderer(&app)
 
 	// pass global config to render
 	repo := handler.NewRepo(&app, db)

@@ -9,6 +9,7 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/ishanshre/Booking-App/internal/config"
+	"github.com/joho/godotenv"
 )
 
 var app config.AppConfig
@@ -22,6 +23,9 @@ func main() {
 	if err != nil {
 		log.Println("Usuage: command <port-number>")
 		log.Fatalln("port number must be an integer: 1024 to 65535")
+	}
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("error in loading env files")
 	}
 
 	db, err := run()
