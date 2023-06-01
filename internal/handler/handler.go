@@ -317,3 +317,7 @@ func (m *Repository) HandleLogout(w http.ResponseWriter, r *http.Request) {
 	_ = m.App.Session.RenewToken(r.Context())
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
+
+func (m *Repository) HandleAdminDashboard(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{})
+}
