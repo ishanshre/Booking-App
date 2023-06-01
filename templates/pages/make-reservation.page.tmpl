@@ -5,11 +5,21 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1 class="text-center mt-5">Make Reservation</h1>
-
                 {{$res := index .Data "reservation"}}
+                <h1 class="text-center mt-5">Make Reservation</h1>
+                <p>
+                    <p class="h2">Reservation Detail</p>
+                    Room: {{$res.Room.RoomName}}
+                    Arrival: {{index .StringMap "start_date"}}
+                    Departure: {{index .StringMap "end_date"}}
+                </p>
+
+                
                 <form action="/make-reservation" method="post"  novalidate>
                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" id="csrf_token">
+                    <input type="hidden" name="start_date" value="{{index .StringMap "start_date"}}">
+                    <input type="hidden" name="end_date" value="{{index .StringMap "end_date"}}">
+                    <input type="hidden" name="room_id" value="{{$res.Room.ID}}">
                     <div class="form-group mt-5">
                         <label for="first_name"
                             class="{{with .Form.Errors.Get "first_name"}}text-red{{end}}"
@@ -70,45 +80,6 @@
                         </div>
                         <div class="invalid-feedback">
                             Please select a valid Phone Number
-                        </div>
-                    </div>
-                    <div class="form-group mt-5">
-                        <label for="start_date" class="{{with .Form.Errors.Get "start_date"}}text-red{{end}}">Start Date: </label>
-                        {{with .Form.Errors.Get "start_date"}}<label class="text-red">{{.}}</label>{{end}}
-                        <input class="form-control {{with .Form.Errors.Get "start_date"}}is-invalid{{end}}" 
-                        type="text" name="start_date" id="start_date" 
-                        required autocomplete="off" value="{{$res.StartDate}}">
-                        <div class="valid-feedback">
-                                Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            Please select a valid Invalid Start Date
-                        </div>
-                    </div>
-                    <div class="form-group mt-5">
-                        <label for="end_date" class="{{with .Form.Errors.Get "end_date"}}text-red{{end}}">End Date:</label>
-                        {{with .Form.Errors.Get "end_date"}}<label class="text-red">{{.}}</label>{{end}}
-                        <input class="form-control {{with .Form.Errors.Get "end_date"}}is-invalid{{end}}" 
-                        type="text" name="end_date" id="end_date" 
-                        required autocomplete="off" value="{{$res.EndDate}}">
-                        <div class="valid-feedback">
-                                Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            Please select a valid End Date
-                        </div>
-                    </div>
-                    <div class="form-group mt-5">
-                        <label for="room_id" class="{{with .Form.Errors.Get "room_id"}}text-red{{end}}">Rooom ID:</label>
-                        {{with .Form.Errors.Get "room_id"}}<label class="text-red">{{.}}</label>{{end}}
-                        <input class="form-control {{with .Form.Errors.Get "room_id"}}is-invalid{{end}}" 
-                        type="text" name="room_id" id="room_id" 
-                        required autocomplete="off" value="{{$res.RoomID}}">
-                        <div class="valid-feedback">
-                                Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            Please select a valid Room ID
                         </div>
                     </div>
                     <hr>

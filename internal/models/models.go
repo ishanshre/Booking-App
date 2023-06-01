@@ -32,7 +32,7 @@ type Reservation struct {
 	Phone     string    `json:"password"`
 	StartDate time.Time `json:"start_date"`
 	EndDate   time.Time `json:"end_date"`
-	RoomID    int       `json:"room_id"`
+	Room      Room
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

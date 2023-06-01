@@ -29,6 +29,8 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Post("/search-avaliable", handler.Repo.HandlePostSearchAvaliable)
 	mux.Post("/search-avaliable-json", handler.Repo.HandleSearchAvaliableJson)
 
+	mux.Get("/choose-room/{id}", handler.Repo.HandleChooseRoom)
+
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
 	return mux
