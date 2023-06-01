@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -300,14 +301,19 @@ func (m *Repository) HandlePostLogin(w http.ResponseWriter, r *http.Request) {
 	password := r.Form.Get("password")
 	id, _, err := m.DB.Authenticate(email, password)
 	if err != nil {
-		helpers.ServerError(w, err)
+		log.Println(err)
 		m.App.Session.Put(r.Context(), "error", "Invalid Login Credentials")
 		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 		return
 	}
 	m.App.Session.Put(r.Context(), "user_id", id)
 	m.App.Session.Put(r.Context(), "flash", "Login Succesfull")
-	render.Template(w, r, "login.page.tmpl", &models.TemplateData{
-		Form: forms.New(nil),
-	})
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+// HandleLogout log the user out
+func (m *Repository) HandleLogout(w http.ResponseWriter, r *http.Request) {
+	_ = m.App.Session.Destroy(r.Context())
+	_ = m.App.Session.RenewToken(r.Context())
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
