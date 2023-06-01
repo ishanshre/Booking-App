@@ -280,3 +280,34 @@ func (m *Repository) HandleLogin(w http.ResponseWriter, r *http.Request) {
 		Form: forms.New(nil),
 	})
 }
+func (m *Repository) HandlePostLogin(w http.ResponseWriter, r *http.Request) {
+	// renew session token
+	_ = m.App.Session.RenewToken(r.Context())
+	if err := r.ParseForm(); err != nil {
+		helpers.ServerError(w, err)
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("email", "password")
+	form.IsEmail("email")
+	if !form.Valid() {
+		render.Template(w, r, "login.page.tmpl", &models.TemplateData{
+			Form: form,
+		})
+		return
+	}
+	email := r.Form.Get("email")
+	password := r.Form.Get("password")
+	id, _, err := m.DB.Authenticate(email, password)
+	if err != nil {
+		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Invalid Login Credentials")
+		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+		return
+	}
+	m.App.Session.Put(r.Context(), "user_id", id)
+	m.App.Session.Put(r.Context(), "flash", "Login Succesfull")
+	render.Template(w, r, "login.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+}

@@ -3,10 +3,10 @@ include .env
 
 DB_URL=postgresql://${m_db_username}:${m_db_password}@localhost:5432/${m_db_name}?sslmode=disable
 
-run:
+runOLD:
 	go run ./cmd/web/main.go ./cmd/web/middleware.go ./cmd/web/router.go ./cmd/web/run.go 8000
 
-runWithEmail:
+run:
 	go run ./cmd/web/main.go ./cmd/web/middleware.go ./cmd/web/router.go ./cmd/web/run.go ./cmd/web/send-email.go 8000
 
 coverage:
