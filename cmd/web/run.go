@@ -26,6 +26,8 @@ func run() (*driver.DB, error) {
 	gob.Register(models.Room{})
 	gob.Register(models.RoomRestriction{})
 
+	mailChan := make(chan models.MailData)
+	app.MailChan = mailChan
 	// set InProduction to true in production
 	app.InProduction = false
 

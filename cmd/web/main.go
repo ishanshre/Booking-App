@@ -34,6 +34,17 @@ func main() {
 	}
 	defer db.SQL.Close()
 
+	defer close(app.MailChan)
+
+	listenForMail()
+
+	// msg := models.MailData{
+	// 	To:      "john@do.ca",
+	// 	From:    "me@hee.com",
+	// 	Subject: "Some",
+	// 	Content: "",
+	// }
+	// app.MailChan <- msg
 	// create the http server
 	port := fmt.Sprintf(":%v", p)
 	srv := &http.Server{
