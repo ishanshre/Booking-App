@@ -57,6 +57,7 @@
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">User</a>
                 <ul class="dropdown-menu">
                 {{if eq .IsAuthenticated 1}}
+                    <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
                     <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
                 {{else}}
                     <li><a class="dropdown-item" href="/user/login">Login</a></li>

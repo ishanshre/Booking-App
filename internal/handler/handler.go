@@ -277,11 +277,19 @@ func (m *Repository) HandleChooseRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) HandleLogin(w http.ResponseWriter, r *http.Request) {
+	if helpers.IsAuthenticated(r) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	render.Template(w, r, "login.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
 	})
 }
 func (m *Repository) HandlePostLogin(w http.ResponseWriter, r *http.Request) {
+	if helpers.IsAuthenticated(r) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	// renew session token
 	_ = m.App.Session.RenewToken(r.Context())
 	if err := r.ParseForm(); err != nil {
@@ -313,6 +321,10 @@ func (m *Repository) HandlePostLogin(w http.ResponseWriter, r *http.Request) {
 
 // HandleLogout log the user out
 func (m *Repository) HandleLogout(w http.ResponseWriter, r *http.Request) {
+	if !helpers.IsAuthenticated(r) {
+		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+		return
+	}
 	_ = m.App.Session.Destroy(r.Context())
 	_ = m.App.Session.RenewToken(r.Context())
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
